@@ -12,10 +12,11 @@ const gpsTracker = {};
     const pubnub = new PubNub({
         subscribeKey: 'sub-c-b5450a2c-3f3b-491d-9d29-260ec735fcc5'
     });
-    const secondsToConsiderStale = 300; // 300 seconds = 5 minutes
+    const secondsToConsiderStale = 5; // 300 seconds = 5 minutes
     const maxSecondsSinceLastMessage = 86400000; // 86400000 = 24 hours
     let map, mark, lineCoords = [];
     gpsTracker.lastPnMessage = null;
+    gpsTracker.staleCheckTimeoutId = null;
 
     const dateFormat = (dateObject, format = 'yyyy-mm-dd hh:ii:ss') => {
         const year = dateObject.getFullYear();
@@ -33,6 +34,13 @@ const gpsTracker = {};
             .replace('ii', minutes.toString().padStart(2, "0"))
             .replace('ss', seconds.toString().padStart(2, "0"));
     };
+
+    const staleCheckHandler = () => {
+        updateMapStatus(gpsTracker.lastPnMessage);
+    };
+
+    const timetokenIsStale = timetoken =>
+        ((new Date().getTime() / 1e3) - (timetoken / 1e7)) >= secondsToConsiderStale;
 
     /**
      * Redraw map lines and re-center view
@@ -57,14 +65,16 @@ const gpsTracker = {};
     };
 
     const updateMapStatus = pnMessage => {
+        if (gpsTracker.staleCheckTimeoutId !== null) {
+            clearTimeout(gpsTracker.staleCheckTimeoutId);
+            gpsTracker.staleCheckTimeoutId = null;
+        }
+
         let status = 'unknown';
         if (typeof pnMessage === 'undefined') {
             status = 'unknown';
         } else if (pnMessage === gpsTracker.lastPnMessage || gpsTracker.lastPnMessage === null) {
-            const timeDiffSeconds =
-                (new Date().getTime()/1e3) -
-                (parseInt(pnMessage.timetoken) / 1e7);
-            if (timeDiffSeconds >= secondsToConsiderStale) {
+            if (timetokenIsStale(pnMessage.timetoken)) {
                 status = 'stale';
             } else {
                 status = 'active';
@@ -90,6 +100,7 @@ const gpsTracker = {};
                 mapStatusEle.classList = 'map-status-has-active';
                 mapStatusCoordsEle.innerText = 'last position: ' + pnMessage.message.lat + ', ' + pnMessage.message.lng;
                 mapStatusLastUpdatedEle.innerText = 'received at: ' + dateFormat(new Date(pnMessage.timetoken/1e4));
+                gpsTracker.staleCheckTimeoutId = setTimeout(staleCheckHandler, secondsToConsiderStale * 1e3);
                 break;
             default:
                 mapStatusTextEle.innerText = 'UNKNOWN STATUS';
