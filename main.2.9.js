@@ -12,7 +12,7 @@ const gpsTracker = {};
     const pubnub = new PubNub({
         subscribeKey: 'sub-c-b5450a2c-3f3b-491d-9d29-260ec735fcc5'
     });
-    const secondsToConsiderStale = 5; // 300 seconds = 5 minutes
+    const secondsToConsiderStale = 300; // 300 seconds = 5 minutes
     const maxSecondsSinceLastMessage = 86400000; // 86400000 = 24 hours
     let map, mark, lineCoords = [];
     gpsTracker.lastPnMessage = null;
