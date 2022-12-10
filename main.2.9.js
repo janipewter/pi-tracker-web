@@ -18,7 +18,7 @@ const gpsTracker = {};
     gpsTracker.lastPnMessage = null;
     gpsTracker.staleCheckTimeoutId = null;
 
-    const dateFormat = (dateObject, format = 'yyyy-mm-dd hh:ii:ss') => {
+    const dateFormat = (dateObject, format = 'dd/mm/yyyy hh:ii:ss') => {
         const year = dateObject.getFullYear();
         const month = dateObject.getMonth()+1;
         const day = dateObject.getDate();
