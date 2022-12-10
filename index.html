@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <title>Realtime GPS Tracker</title>
+    <link rel="stylesheet" href="map.2.8.css">
+</head>
+<body>
+<div id="content">
+    <div id="map-topbar">
+        <div id="map-status">
+            <div id="map-status-text">
+                UNKNOWN
+            </div>
+            <div id="map-status-coords"></div>
+            <div id="map-status-last-updated">
+            </div>
+        </div>
+    </div>
+    <div id="map-canvas"></div>
+</div>
+<script type="text/javascript" src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.19.0.min.js"></script>
+<script type="text/javascript" src="main.2.8.js"></script>
+<script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCTHrFlqnSmdRLKVAjMpwshGMvUYtLgQQs&callback=initMap"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    --body-width: width;
+}
+
+#content {
+    padding:0;
+    width:100%;
+}
+
+#content #map-canvas {
+    width:100%;
+    height:100vh;
+    z-index: 1;
+}
+
+#content #map-topbar {
+    position: absolute;
+    top: 0.55em;
+    #right: calc((100vw / 2) - (25% / 2));
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#content #map-status {
+    border-radius: 0.125em;
+    box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.3);
+    background-color: #FFFFFF;
+    z-index: 10;
+    padding: 0 0.5em 0;
+    line-height: 1.5em;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#content #map-status.map-status-has-stale {
+    background-color: #dc3545;
+    border-color: #B82A37;
+}
+
+#content #map-status.map-status-has-active {
+    background-color: #28a745;
+    border-color: #208036;
+}
+
+#content #map-status.map-status-has-unknown {
+    background-color: #dc3545;
+    border-color: #B82A37;
+}
+
+#content #map-status #map-status-text {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+    flex: 1 1 100%;
+}
+#content #map-status #map-status-coords {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+    flex: 1 1 100%;
+}
+
+#content #map-status #map-status-last-updated {
+    color: #FFFFFF;
+    flex: 1 1 100%;
+    text-align: center;
+}
